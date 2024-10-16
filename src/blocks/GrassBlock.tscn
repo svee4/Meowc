@@ -1,0 +1,24 @@
+[gd_scene load_steps=5 format=3 uid="uid://cipa1xjfjspsm"]
+
+[ext_resource type="Script" path="res://components/BreakableBlockComponent.cs" id="1_3pyrm"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_40itw"]
+
+[sub_resource type="BoxMesh" id="BoxMesh_xj23n"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_w30t6"]
+albedo_color = Color(0.249387, 0.532078, 0.326438, 1)
+
+[node name="Root" type="Node3D"]
+
+[node name="Block" type="StaticBody3D" parent="."]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Block"]
+shape = SubResource("BoxShape3D_40itw")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Block"]
+mesh = SubResource("BoxMesh_xj23n")
+surface_material_override/0 = SubResource("StandardMaterial3D_w30t6")
+
+[node name="BreakableBlockComponent" type="Node" parent="."]
+script = ExtResource("1_3pyrm")

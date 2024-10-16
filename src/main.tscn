@@ -1,0 +1,42 @@
+[gd_scene load_steps=7 format=3 uid="uid://de3uk27bxmfy1"]
+
+[ext_resource type="PackedScene" uid="uid://o7lviwbf12uv" path="res://scenes/player.tscn" id="1_g5aqy"]
+[ext_resource type="Script" path="res://Main.cs" id="1_mius6"]
+[ext_resource type="PackedScene" uid="uid://cipa1xjfjspsm" path="res://blocks/GrassBlock.tscn" id="3_dm1u7"]
+[ext_resource type="PackedScene" uid="uid://b4nioks557mpi" path="res://blocks/StoneBlock.tscn" id="4_c7owb"]
+
+[sub_resource type="SphereMesh" id="SphereMesh_dixyc"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_nruhv"]
+albedo_color = Color(1, 1, 0.0980392, 1)
+
+[node name="Main" type="Node3D"]
+script = ExtResource("1_mius6")
+GeneratedBlocksCount = 50
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
+transform = Transform3D(0.43765, -0.80366, 0.40323, 0.59104, 0.595089, 0.544556, -0.677595, 0, 0.735435, 2.82887, 3.68951, 3.46873)
+shadow_enabled = true
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="DirectionalLight3D"]
+transform = Transform3D(1, -9.31337e-10, 0, 2.26365e-08, 1, -7.48639e-09, -5.96046e-08, 1.55493e-08, 1, -0.00701785, -0.0043664, 0.0123882)
+mesh = SubResource("SphereMesh_dixyc")
+surface_material_override/0 = SubResource("StandardMaterial3D_nruhv")
+
+[node name="Player" parent="." instance=ExtResource("1_g5aqy")]
+
+[node name="Blocks" type="Node" parent="."]
+
+[node name="Root3" parent="Blocks" instance=ExtResource("3_dm1u7")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1, 1, -1)
+
+[node name="Root" parent="Blocks" instance=ExtResource("3_dm1u7")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.001, 2, -0.992)
+
+[node name="Root2" parent="Blocks" instance=ExtResource("4_c7owb")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, -1)
+
+[node name="DebugInfoContainer" type="BoxContainer" parent="."]
+offset_right = 40.0
+offset_bottom = 40.0
+vertical = true
