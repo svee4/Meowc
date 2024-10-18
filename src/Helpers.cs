@@ -101,16 +101,7 @@ public static class Helpers
 
     public static Node GetSceneRoot(this Node node)
     {
-        var tempRoot = node;
-
-        // get the root of the block's scene. TODO make this better
-        while (true)
-        {
-            if (tempRoot.Owner is { } parent) tempRoot = parent;
-            else break;
-        }
-
-        return tempRoot;
+        return node.Owner;
     }
 
     [Conditional("DEBUG")]

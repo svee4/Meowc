@@ -3,6 +3,7 @@ using Meowc;
 using Meowc.Components;
 using System;
 using System.Diagnostics;
+using System.Diagnostics.CodeAnalysis;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -23,6 +24,9 @@ public partial class Player : CharacterBody3D
     [Export]
     public int Reach { get; set; } = 5;
 
+    [Export]
+    public Globals.Gamemode Gamemode { get; set; }
+
     private readonly float Gravity = Globals.Gravity;
 
     private PackedScene _raycastTestScene = null!;
@@ -31,6 +35,7 @@ public partial class Player : CharacterBody3D
     private Label _debugInfoLabel = null!;
     private bool _primaryInputHeld;
     private bool _secondaryInputHeld;
+    private Node? _lookingAtNode;
 
     public override void _Ready()
     {
@@ -57,20 +62,19 @@ public partial class Player : CharacterBody3D
 
     private void HandleInputs(double delta)
     {
-        // https://www.youtube.com/watch?v=uH6yeUUVQdE&list=PLEHvj4yeNfeF6s-UVs5Zx5TfNYmeCiYwf&index=24
+        TryGetAimTarget(out var aimPosition, out var aimNode);
 
-
-
-        var spaceState = _camera.GetWorld3D().DirectSpaceState;
-        var screenCenter = GetViewport().GetVisibleRect().Size / 2;
-
-        var rayOrigin = _camera.ProjectRayOrigin(screenPoint: screenCenter);
-        var rayEnd = rayOrigin + _camera.ProjectRayNormal(screenPoint: screenCenter) * Reach;
-
-        var query = PhysicsRayQueryParameters3D.Create(from: rayOrigin, to: rayEnd);
-        query.CollideWithBodies = true;
-
-        var result = spaceState.IntersectRay(query);
+        if (_lookingAtNode is { })
+        {
+            if (_lookingAtNode.GetInstanceId() != (aimNode?.GetInstanceId() ?? 0))
+            {
+                if (_lookingAtNode.TryGetComponent<BreakableBlockComponent>(out var component)
+                    && component.IsDamaged)
+                {
+                    component.Reset();
+                }
+            }
+        }
 
         if (Input.IsActionPressed(Globals.InputMap.PrimaryInput))
         {
@@ -79,28 +83,41 @@ public partial class Player : CharacterBody3D
                 // handle single click
                 _primaryInputHeld = true;
 
-                if (result.TryGetValue("position", out var position))
+                if (aimPosition is { } position)
                 {
-                    var pos = (Vector3)position;
                     var dot = (Node3D)_raycastTestScene.Instantiate();
-                    dot.GlobalPosition = pos;
                     GetTree().Root.AddChild(dot);
+                    dot.GlobalPosition = position;
                     _ = Task.Delay(500).ContinueWith(_ => dot?.QueueFree());
                 }
 
-                if (result.TryGetValue("collider", out var collider))
+                if (aimNode is { })
                 {
-                    var node = ((Node)collider).GetSceneRoot();
+                    var node = aimNode.GetSceneRoot();
 
                     if (node.TryGetComponent<BreakableBlockComponent>(out var component))
                     {
-                        component.Break();
+                        if (Gamemode == Globals.Gamemode.Creative)
+                        {
+                            component.Break();
+                        }
+                        else
+                        {
+                            component.Damage();
+                        }
                     }
                 }
             }
             else
             {
                 // handle holding down
+                if (_lookingAtNode is { } && aimNode is { })
+                {
+                    if (_lookingAtNode.GetInstanceId() == aimNode.GetInstanceId())
+                    {
+
+                    }
+                }
             }
         }
         else
@@ -115,15 +132,6 @@ public partial class Player : CharacterBody3D
             {
                 // handle single click
                 _secondaryInputHeld = true;
-
-                if (result.TryGetValue("position", out var position))
-                {
-                    var pos = ((Vector3)position);
-                    var dot = (Node3D)_raycastTestScene.Instantiate();
-                    dot.GlobalPosition = pos;
-                    GetTree().Root.AddChild(dot);
-                    _ = Task.Delay(500).ContinueWith(_ => dot?.QueueFree());
-                }
             }
             else
             {
@@ -135,6 +143,35 @@ public partial class Player : CharacterBody3D
             _secondaryInputHeld = false;
         }
 
+    }
+
+
+    private bool TryGetAimTarget(out Vector3? position, [NotNullWhen(true)] out Node? node)
+    {
+        // https://www.youtube.com/watch?v=uH6yeUUVQdE&list=PLEHvj4yeNfeF6s-UVs5Zx5TfNYmeCiYwf&index=24
+
+        var spaceState = _camera.GetWorld3D().DirectSpaceState;
+        var screenCenter = GetViewport().GetVisibleRect().Size / 2;
+
+        var rayOrigin = _camera.ProjectRayOrigin(screenPoint: screenCenter);
+        var rayEnd = rayOrigin + _camera.ProjectRayNormal(screenPoint: screenCenter) * Reach;
+
+        var query = PhysicsRayQueryParameters3D.Create(from: rayOrigin, to: rayEnd);
+        query.CollideWithBodies = true;
+
+        var result = spaceState.IntersectRay(query);
+
+        if (result.TryGetValue("position", out var pos) 
+            && result.TryGetValue("collider", out var col))
+        {
+            position = (Vector3)pos;
+            node = (Node)col;
+            return true;
+        }
+
+        position = default;
+        node = null;
+        return false;
     }
 
     private void HandleMovement(double delta)

@@ -9,6 +9,12 @@ public static class Globals
 
     public static int FrameRateCap => 500;
 
+    public enum Gamemode
+    {
+        Creative = 1,
+        Survival
+    }
+
     public static class InputMap
     {
         public static string MoveLeft => "move_left";

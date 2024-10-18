@@ -24,17 +24,18 @@ mesh = SubResource("SphereMesh_dixyc")
 surface_material_override/0 = SubResource("StandardMaterial3D_nruhv")
 
 [node name="Player" parent="." instance=ExtResource("1_g5aqy")]
+Gamemode = 1
 
 [node name="Blocks" type="Node" parent="."]
 
-[node name="Root3" parent="Blocks" instance=ExtResource("3_dm1u7")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1, 1, -1)
-
-[node name="Root" parent="Blocks" instance=ExtResource("3_dm1u7")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.001, 2, -0.992)
-
-[node name="Root2" parent="Blocks" instance=ExtResource("4_c7owb")]
+[node name="GrassBlock" parent="Blocks" instance=ExtResource("3_dm1u7")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, -1)
+
+[node name="StoneBlock" parent="Blocks" instance=ExtResource("4_c7owb")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2, -1)
+
+[node name="GrassBlock2" parent="Blocks" instance=ExtResource("3_dm1u7")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1, 1, -1)
 
 [node name="DebugInfoContainer" type="BoxContainer" parent="."]
 offset_right = 40.0
