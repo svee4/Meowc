@@ -1,13 +1,13 @@
 [gd_scene load_steps=5 format=3 uid="uid://cipa1xjfjspsm"]
 
-[ext_resource type="Script" path="res://components/BreakableBlockComponent.cs" id="1_3pyrm"]
+[ext_resource type="Script" path="res://Components/BreakableBlockComponent.cs" id="1_3pyrm"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_40itw"]
 
-[sub_resource type="BoxMesh" id="BoxMesh_xj23n"]
+[sub_resource type="BoxMesh" id="BoxMesh_o4d1s"]
 
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_w30t6"]
-albedo_color = Color(0.249387, 0.532078, 0.326438, 1)
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_bn2le"]
+albedo_color = Color(0.431373, 1, 0.2, 1)
 
 [node name="GrassBlock" type="Node3D"]
 
@@ -17,9 +17,9 @@ albedo_color = Color(0.249387, 0.532078, 0.326438, 1)
 shape = SubResource("BoxShape3D_40itw")
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="Block"]
-mesh = SubResource("BoxMesh_xj23n")
-surface_material_override/0 = SubResource("StandardMaterial3D_w30t6")
+mesh = SubResource("BoxMesh_o4d1s")
+surface_material_override/0 = SubResource("StandardMaterial3D_bn2le")
 
 [node name="BreakableBlockComponent" type="Node" parent="."]
 script = ExtResource("1_3pyrm")
-Health = 10
+MaxHealth = null

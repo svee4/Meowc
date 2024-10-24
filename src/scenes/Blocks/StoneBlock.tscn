@@ -1,6 +1,6 @@
 [gd_scene load_steps=5 format=3 uid="uid://b4nioks557mpi"]
 
-[ext_resource type="Script" path="res://components/BreakableBlockComponent.cs" id="1_577qv"]
+[ext_resource type="Script" path="res://Components/BreakableBlockComponent.cs" id="1_577qv"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_dxsx2"]
 
@@ -22,4 +22,3 @@ surface_material_override/0 = SubResource("StandardMaterial3D_poul3")
 
 [node name="BreakableBlockComponent" type="Node" parent="."]
 script = ExtResource("1_577qv")
-Health = 10

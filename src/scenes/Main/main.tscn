@@ -1,9 +1,9 @@
 [gd_scene load_steps=7 format=3 uid="uid://de3uk27bxmfy1"]
 
-[ext_resource type="PackedScene" uid="uid://o7lviwbf12uv" path="res://scenes/player.tscn" id="1_g5aqy"]
-[ext_resource type="Script" path="res://Main.cs" id="1_mius6"]
-[ext_resource type="PackedScene" uid="uid://cipa1xjfjspsm" path="res://blocks/GrassBlock.tscn" id="3_dm1u7"]
-[ext_resource type="PackedScene" uid="uid://b4nioks557mpi" path="res://blocks/StoneBlock.tscn" id="4_c7owb"]
+[ext_resource type="PackedScene" uid="uid://o7lviwbf12uv" path="res://Scenes/Player/Player.tscn" id="1_g5aqy"]
+[ext_resource type="Script" path="res://Scenes/Main/Main.cs" id="1_mius6"]
+[ext_resource type="PackedScene" uid="uid://cipa1xjfjspsm" path="res://Scenes/Blocks/GrassBlock.tscn" id="3_dm1u7"]
+[ext_resource type="PackedScene" uid="uid://b4nioks557mpi" path="res://Scenes/Blocks/StoneBlock.tscn" id="4_c7owb"]
 
 [sub_resource type="SphereMesh" id="SphereMesh_dixyc"]
 

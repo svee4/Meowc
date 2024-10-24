@@ -33,9 +33,9 @@ public partial class Main : Node3D
 	{
         var blocksNode = Helpers.GetNodeOrThrow<Node>(this, "Blocks");
 
-        var allBlocksFilenames = Directory.GetFiles(ProjectSettings.GlobalizePath("res://blocks"));
+        var allBlocksFilenames = Directory.GetFiles(ProjectSettings.GlobalizePath("res://Scenes/Blocks"));
         var allBlockResources = allBlocksFilenames
-            .Select(filename => ResourceLoader.Load<PackedScene>(filename))
+            .Select(GD.Load<PackedScene>)
             .ToList();
 
         var generatedBlockLocations = new List<(float x, float z)>();

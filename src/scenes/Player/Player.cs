@@ -7,6 +7,8 @@ using System.Diagnostics.CodeAnalysis;
 using System.Threading;
 using System.Threading.Tasks;
 
+namespace Meowc.Scenes.Player;
+
 public partial class Player : CharacterBody3D
 {
     [Export]
@@ -28,20 +30,27 @@ public partial class Player : CharacterBody3D
     public Globals.Gamemode Gamemode { get; set; }
 
     private readonly float Gravity = Globals.Gravity;
-
+    
     private PackedScene _raycastTestScene = null!;
+    private PackedScene _inventoryScene = null!;
+    private Node? _inventoryInstance;
+    
     private Node3D _pivot = null!;
     private Camera3D _camera = null!;
     private Label _debugInfoLabel = null!;
     private bool _primaryInputHeld;
     private bool _secondaryInputHeld;
     private Node? _lookingAtNode;
+    private Hotbar _hotbar = null!;
 
     public override void _Ready()
     {
-        _raycastTestScene = GD.Load<PackedScene>("res://scenes//RaycastTest.tscn");
+        _raycastTestScene = GD.Load<PackedScene>("res://Scenes//RaycastTest.tscn");
+        _inventoryScene = GD.Load<PackedScene>("res://Scenes/Player/Inventory/Inventory.tscn");	
+
         _pivot = Helpers.GetNodeOrThrow<Node3D>(this, "Pivot");
         _camera = Helpers.GetNodeOrThrow<Camera3D>(this, "Pivot/Camera3D");
+        _hotbar = Helpers.GetNodeOrThrow<Hotbar>(this, "UI/Hotbar");
 
         _debugInfoLabel = new Label();
         Helpers.GetNodeOrThrow<BoxContainer>(this, "../DebugInfoContainer")
@@ -64,7 +73,7 @@ public partial class Player : CharacterBody3D
     {
         TryGetAimTarget(out var aimPosition, out var aimNode);
 
-        if (_lookingAtNode is { })
+        if (_lookingAtNode is not null)
         {
             if (_lookingAtNode.GetInstanceId() != (aimNode?.GetInstanceId() ?? 0))
             {
@@ -74,6 +83,22 @@ public partial class Player : CharacterBody3D
                     component.Reset();
                 }
             }
+        }
+
+        if (Input.IsActionJustPressed(Globals.InputMap.OpenInventory))
+        {
+	        if (_inventoryInstance is null)
+	        {
+		        _inventoryInstance = _inventoryScene.Instantiate();
+		        AddChild(_inventoryInstance);
+		        Input.SetMouseMode(Input.MouseModeEnum.Confined);
+	        }
+	        else
+	        {
+		        _inventoryInstance.QueueFree();
+		        _inventoryInstance = null;
+		        Input.SetMouseMode(Input.MouseModeEnum.Captured);
+	        }
         }
 
         if (Input.IsActionPressed(Globals.InputMap.PrimaryInput))
@@ -91,7 +116,7 @@ public partial class Player : CharacterBody3D
                     _ = Task.Delay(500).ContinueWith(_ => dot?.QueueFree());
                 }
 
-                if (aimNode is { })
+                if (aimNode is not null)
                 {
                     var node = aimNode.GetSceneRoot();
 
@@ -111,7 +136,7 @@ public partial class Player : CharacterBody3D
             else
             {
                 // handle holding down
-                if (_lookingAtNode is { } && aimNode is { })
+                if (_lookingAtNode is not null && aimNode is not null)
                 {
                     if (_lookingAtNode.GetInstanceId() == aimNode.GetInstanceId())
                     {
@@ -131,6 +156,9 @@ public partial class Player : CharacterBody3D
             if (!_secondaryInputHeld)
             {
                 // handle single click
+
+
+
                 _secondaryInputHeld = true;
             }
             else
@@ -183,7 +211,7 @@ public partial class Player : CharacterBody3D
             velocity.Y -= (float)(Gravity * delta);
         }
 
-        if (Input.IsActionPressed("jump") && IsOnFloor())
+        if (Input.IsActionPressed(Globals.InputMap.Jump) && IsOnFloor())
         {
             velocity.Y = JumpVelocity;
         }

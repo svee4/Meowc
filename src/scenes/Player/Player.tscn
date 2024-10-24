@@ -1,0 +1,249 @@
+[gd_scene load_steps=8 format=3 uid="uid://o7lviwbf12uv"]
+
+[ext_resource type="Script" path="res://Scenes/Player/Player.cs" id="1_rp6ta"]
+[ext_resource type="Texture2D" uid="uid://cfegliddeh1hm" path="res://Art/Sprites/stoneblock.png" id="2_ehheu"]
+[ext_resource type="Script" path="res://Scenes/Player/Hotbar/Hotbar.cs" id="2_ogbof"]
+[ext_resource type="Texture2D" uid="uid://c2axvyd7k3c0r" path="res://Art/Sprites/grassblock.png" id="3_vju37"]
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_xuymk"]
+
+[sub_resource type="CapsuleMesh" id="CapsuleMesh_k163g"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_rspiv"]
+bg_color = Color(0.6, 0.6, 0.6, 0.505882)
+
+[node name="Player" type="CharacterBody3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
+script = ExtResource("1_rp6ta")
+
+[node name="Pivot" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, 0)
+
+[node name="Camera3D" type="Camera3D" parent="Pivot"]
+
+[node name="Hand" type="Node3D" parent="Pivot/Camera3D"]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+shape = SubResource("CapsuleShape3D_xuymk")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="CollisionShape3D"]
+mesh = SubResource("CapsuleMesh_k163g")
+skeleton = NodePath("../../Pivot")
+
+[node name="UI" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 1
+
+[node name="Reticle" type="CenterContainer" parent="UI"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Line2D" type="Line2D" parent="UI/Reticle"]
+points = PackedVector2Array(-15, 0, 15, 0)
+width = 2.0
+
+[node name="Line2D2" type="Line2D" parent="UI/Reticle"]
+points = PackedVector2Array(0, -15, 0, 15)
+width = 2.0
+
+[node name="Hotbar" type="Panel" parent="UI"]
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -355.0
+offset_top = -80.0
+offset_right = 355.0
+grow_horizontal = 2
+grow_vertical = 0
+theme_override_styles/panel = SubResource("StyleBoxFlat_rspiv")
+script = ExtResource("2_ogbof")
+
+[node name="HBoxContainer" type="HBoxContainer" parent="UI/Hotbar"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/separation = 10
+
+[node name="HotBar1" type="Panel" parent="UI/Hotbar/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="MarginContainer" type="MarginContainer" parent="UI/Hotbar/HBoxContainer/HotBar1"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 3
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_top = 10
+theme_override_constants/margin_right = 10
+theme_override_constants/margin_bottom = 10
+
+[node name="TextureRect" type="TextureRect" parent="UI/Hotbar/HBoxContainer/HotBar1/MarginContainer"]
+layout_mode = 2
+texture = ExtResource("2_ehheu")
+
+[node name="HotBar2" type="Panel" parent="UI/Hotbar/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="MarginContainer" type="MarginContainer" parent="UI/Hotbar/HBoxContainer/HotBar2"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 3
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_top = 10
+theme_override_constants/margin_right = 10
+theme_override_constants/margin_bottom = 10
+
+[node name="TextureRect" type="TextureRect" parent="UI/Hotbar/HBoxContainer/HotBar2/MarginContainer"]
+layout_mode = 2
+texture = ExtResource("3_vju37")
+
+[node name="HotBar3" type="Panel" parent="UI/Hotbar/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="MarginContainer" type="MarginContainer" parent="UI/Hotbar/HBoxContainer/HotBar3"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 3
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_top = 10
+theme_override_constants/margin_right = 10
+theme_override_constants/margin_bottom = 10
+
+[node name="TextureRect" type="TextureRect" parent="UI/Hotbar/HBoxContainer/HotBar3/MarginContainer"]
+layout_mode = 2
+
+[node name="HotBar4" type="Panel" parent="UI/Hotbar/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="MarginContainer" type="MarginContainer" parent="UI/Hotbar/HBoxContainer/HotBar4"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 3
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_top = 10
+theme_override_constants/margin_right = 10
+theme_override_constants/margin_bottom = 10
+
+[node name="TextureRect" type="TextureRect" parent="UI/Hotbar/HBoxContainer/HotBar4/MarginContainer"]
+layout_mode = 2
+texture = ExtResource("2_ehheu")
+
+[node name="HotBar5" type="Panel" parent="UI/Hotbar/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="MarginContainer" type="MarginContainer" parent="UI/Hotbar/HBoxContainer/HotBar5"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 3
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_top = 10
+theme_override_constants/margin_right = 10
+theme_override_constants/margin_bottom = 10
+
+[node name="TextureRect" type="TextureRect" parent="UI/Hotbar/HBoxContainer/HotBar5/MarginContainer"]
+layout_mode = 2
+texture = ExtResource("2_ehheu")
+
+[node name="HotBar6" type="Panel" parent="UI/Hotbar/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="MarginContainer" type="MarginContainer" parent="UI/Hotbar/HBoxContainer/HotBar6"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 3
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_top = 10
+theme_override_constants/margin_right = 10
+theme_override_constants/margin_bottom = 10
+
+[node name="TextureRect" type="TextureRect" parent="UI/Hotbar/HBoxContainer/HotBar6/MarginContainer"]
+layout_mode = 2
+texture = ExtResource("2_ehheu")
+
+[node name="HotBar7" type="Panel" parent="UI/Hotbar/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="MarginContainer" type="MarginContainer" parent="UI/Hotbar/HBoxContainer/HotBar7"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 3
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_top = 10
+theme_override_constants/margin_right = 10
+theme_override_constants/margin_bottom = 10
+
+[node name="TextureRect" type="TextureRect" parent="UI/Hotbar/HBoxContainer/HotBar7/MarginContainer"]
+layout_mode = 2
+texture = ExtResource("2_ehheu")
+
+[node name="HotBar8" type="Panel" parent="UI/Hotbar/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="MarginContainer" type="MarginContainer" parent="UI/Hotbar/HBoxContainer/HotBar8"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 3
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_top = 10
+theme_override_constants/margin_right = 10
+theme_override_constants/margin_bottom = 10
+
+[node name="TextureRect" type="TextureRect" parent="UI/Hotbar/HBoxContainer/HotBar8/MarginContainer"]
+layout_mode = 2
+texture = ExtResource("2_ehheu")

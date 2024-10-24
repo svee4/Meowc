@@ -1,0 +1,5 @@
+[gd_resource type="StyleBoxFlat" format=3 uid="uid://byl26x8fneuyd"]
+
+[resource]
+resource_name = "SelectedHotbarPanelStyle"
+bg_color = Color(0.804743, 0.804743, 0.804743, 1)
